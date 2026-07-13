@@ -1,63 +1,531 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Africa Games — Jeux de plateau africains</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-    }
-    .card { max-width: 560px; }
-    .logo {
-      width: 96px; height: 96px; margin: 0 auto 24px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      border-radius: 24px; display: flex; align-items: center;
-      justify-content: center; font-size: 48px;
-      box-shadow: 0 10px 40px rgba(255, 200, 0, .3);
-    }
-    h1 {
-      font-size: 2.2rem; letter-spacing: 2px;
-      background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    p.tagline { margin: 12px 0 28px; color: rgba(255,255,255,.75); font-size: 1.05rem; }
-    .games { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
-    .chip {
-      padding: 8px 16px; border-radius: 20px; font-size: .9rem;
-      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
-    }
-    a.store {
-      display: inline-block; padding: 14px 32px; border-radius: 16px;
-      background: linear-gradient(135deg, #27AE60, #219653);
-      color: #fff; text-decoration: none; font-weight: 700; font-size: 1.05rem;
-      box-shadow: 0 8px 30px rgba(39,174,96,.35);
-    }
-    footer { margin-top: 36px; font-size: .8rem; color: rgba(255,255,255,.4); }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-  <div class="card">
-    <div class="logo">🎲</div>
-    <h1>AFRICA GAMES</h1>
-    <p class="tagline">Ludo, Awalé, Xam Xam, Undercover — les jeux de plateau africains, réunis dans une seule app. Made in Sénégal 🇸🇳</p>
-    <div class="games">
-      <span class="chip">🎲 Ludo</span>
-      <span class="chip">🌰 Awalé</span>
-      <span class="chip">❓ Xam Xam</span>
-      <span class="chip">🕵️ Undercover</span>
-    </div>
-    <a class="store" href="https://play.google.com/store/apps/details?id=com.symposieum.africaludo">Télécharger sur Google Play</a>
-    <footer>© 2026 Africa Games · contact : fatimtapha@gmail.com</footer>
+<title>Moustapha Diouf Fall — Data Scientist</title>
+<style>
+  :root {
+    --bg: #0e1224;
+    --bg-2: #141a33;
+    --card: #1a2140;
+    --card-edge: rgba(200, 210, 255, 0.12);
+    --ink: #eef1fb;
+    --ink-2: #b8bfd9;
+    --ink-3: #7e87a8;
+    --gold: #e8a93d;
+    --gold-soft: rgba(232, 169, 61, 0.14);
+    --flowline: rgba(122, 148, 220, 0.5);
+    --hairline: rgba(200, 210, 255, 0.10);
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #faf7f0;
+      --bg-2: #f2ede0;
+      --card: #ffffff;
+      --card-edge: rgba(26, 33, 64, 0.10);
+      --ink: #1a2140;
+      --ink-2: #444d73;
+      --ink-3: #6d7594;
+      --gold: #9a6a0e;
+      --gold-soft: rgba(154, 106, 14, 0.10);
+      --flowline: rgba(38, 52, 110, 0.35);
+      --hairline: rgba(26, 33, 64, 0.12);
+      --shadow: 0 18px 40px rgba(26, 33, 64, 0.10);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1224; --bg-2: #141a33; --card: #1a2140;
+    --card-edge: rgba(200, 210, 255, 0.12);
+    --ink: #eef1fb; --ink-2: #b8bfd9; --ink-3: #7e87a8;
+    --gold: #e8a93d; --gold-soft: rgba(232, 169, 61, 0.14);
+    --flowline: rgba(122, 148, 220, 0.5);
+    --hairline: rgba(200, 210, 255, 0.10);
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  }
+  :root[data-theme="light"] {
+    --bg: #faf7f0; --bg-2: #f2ede0; --card: #ffffff;
+    --card-edge: rgba(26, 33, 64, 0.10);
+    --ink: #1a2140; --ink-2: #444d73; --ink-3: #6d7594;
+    --gold: #9a6a0e; --gold-soft: rgba(154, 106, 14, 0.10);
+    --flowline: rgba(38, 52, 110, 0.35);
+    --hairline: rgba(26, 33, 64, 0.12);
+    --shadow: 0 18px 40px rgba(26, 33, 64, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--gold); color: #0e1224; }
+
+  .mono {
+    font-family: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+
+  /* ---------- HERO ---------- */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--hairline); }
+  #flow { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero-inner {
+    position: relative;
+    padding: clamp(72px, 12vh, 130px) 0 clamp(56px, 9vh, 100px);
+  }
+  .hero .eyebrow { margin-bottom: 22px; }
+  .name {
+    margin: 0;
+    font-size: clamp(2.5rem, 7vw, 4.6rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .name .light { font-weight: 200; display: block; }
+  .name .heavy { font-weight: 800; display: block; }
+  .role {
+    margin: 26px 0 0;
+    font-size: clamp(1.02rem, 2vw, 1.22rem);
+    color: var(--ink-2);
+    max-width: 34em;
+    text-wrap: balance;
+  }
+  .role strong { color: var(--ink); font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; padding: 0; list-style: none; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 14px;
+    border: 1px solid var(--card-edge);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--card) 72%, transparent);
+    backdrop-filter: blur(4px);
+    font-size: 0.86rem;
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  .chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex: none; }
+  a.chip:hover { border-color: var(--gold); color: var(--ink); }
+
+  /* ---------- STATS ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-block: 1px solid var(--hairline);
+  }
+  .stat { background: var(--bg); padding: 26px 22px; }
+  .stat b {
+    display: block;
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .stat b em { font-style: normal; color: var(--gold); }
+  .stat span { font-size: 0.85rem; color: var(--ink-3); }
+  @media (max-width: 720px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ---------- SECTIONS ---------- */
+  section { padding: clamp(56px, 9vh, 96px) 0 0; }
+  section:last-of-type { padding-bottom: clamp(56px, 9vh, 96px); }
+  .eyebrow { display: block; margin-bottom: 14px; }
+  h2 {
+    margin: 0 0 34px;
+    font-size: clamp(1.5rem, 3.2vw, 2.05rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  /* work cards */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: 8px;
+    padding: 26px 24px 24px;
+    display: flex; flex-direction: column; gap: 12px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .card h3 { margin: 0; font-size: 1.08rem; font-weight: 700; }
+  .card h3::after {
+    content: ""; display: block; width: 34px; height: 2px;
+    background: var(--gold); margin-top: 10px;
+  }
+  .card p { margin: 0; font-size: 0.93rem; color: var(--ink-2); }
+  .card .tags { margin-top: auto; padding-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: Consolas, monospace; font-size: 0.72rem;
+    color: var(--ink-3);
+    border: 1px solid var(--card-edge); border-radius: 4px;
+    padding: 2px 8px;
+  }
+  .card .pub {
+    font-size: 0.8rem; color: var(--gold); text-decoration: none; font-weight: 600;
+  }
+  .card .pub:hover { text-decoration: underline; }
+
+  /* timeline */
+  .timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+  .timeline::before {
+    content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px;
+    width: 1px; background: var(--hairline);
+  }
+  .timeline li { position: relative; padding: 0 0 36px 40px; }
+  .timeline li:last-child { padding-bottom: 0; }
+  .timeline li::before {
+    content: ""; position: absolute; left: 0; top: 7px;
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--gold);
+  }
+  .timeline .when { font-family: Consolas, monospace; font-size: 0.76rem; color: var(--gold); letter-spacing: 0.06em; }
+  .timeline h3 { margin: 4px 0 2px; font-size: 1.06rem; font-weight: 700; }
+  .timeline .org { font-size: 0.88rem; color: var(--ink-3); margin-bottom: 8px; }
+  .timeline p { margin: 0; max-width: 62ch; font-size: 0.94rem; color: var(--ink-2); }
+
+  /* skills */
+  .skillgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 720px) { .skillgrid { grid-template-columns: 1fr; } }
+  .skillgroup {
+    border: 1px solid var(--card-edge); border-radius: 8px;
+    background: color-mix(in srgb, var(--card) 55%, transparent);
+    padding: 22px 22px 20px;
+  }
+  .skillgroup h3 { margin: 0 0 14px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .skillgroup .chips { margin: 0; }
+  .skillgroup .chip { background: var(--gold-soft); border-color: transparent; color: var(--ink); font-size: 0.88rem; }
+
+  /* education / languages */
+  .duo { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 44px; }
+  @media (max-width: 860px) { .duo { grid-template-columns: 1fr; } }
+  .edu { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+  .edu li { border-left: 2px solid var(--gold); padding-left: 16px; }
+  .edu b { display: block; font-size: 0.98rem; }
+  .edu span { font-size: 0.86rem; color: var(--ink-3); }
+  .facts { display: flex; flex-direction: column; gap: 18px; }
+  .fact h3 { margin: 0 0 6px; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  .fact p { margin: 0; font-size: 0.95rem; color: var(--ink-2); }
+
+  /* footer */
+  footer {
+    margin-top: clamp(56px, 9vh, 96px);
+    border-top: 1px solid var(--hairline);
+    background: var(--bg-2);
+  }
+  .foot-inner { padding: 56px 0 64px; text-align: center; }
+  .foot-inner h2 { margin-bottom: 12px; }
+  .foot-inner p { color: var(--ink-2); max-width: 44em; margin: 0 auto 30px; }
+  .cta {
+    display: inline-block;
+    background: var(--gold); color: #10142a;
+    font-weight: 700; text-decoration: none;
+    padding: 13px 30px; border-radius: 999px;
+    transition: transform 0.2s ease;
+  }
+  .cta:hover { transform: translateY(-2px); }
+  .foot-links { margin-top: 26px; display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; font-size: 0.88rem; color: var(--ink-3); }
+  .foot-links a { color: var(--ink-2); text-decoration: none; }
+  .foot-links a:hover { color: var(--gold); }
+  .colophon { padding: 18px 0 26px; text-align: center; font-family: Consolas, monospace; font-size: 0.72rem; color: var(--ink-3); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card, .cta { transition: none; }
+    .card:hover, .cta:hover { transform: none; }
+  }
+</style>
+
+<header class="hero">
+  <canvas id="flow" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <span class="mono eyebrow">// data · migration · west &amp; central africa</span>
+    <h1 class="name">
+      <span class="light">Moustapha</span>
+      <span class="heavy">Diouf Fall</span>
+    </h1>
+    <p class="role"><strong>Data scientist &amp; developer.</strong> Regional Data &amp; Stabilization Officer at IOM — UN Migration. I turn mobility, transhumance and displacement data into evidence that governments and humanitarians act on.</p>
+    <ul class="chips">
+      <li class="chip"><span class="dot"></span>Dakar, Senegal</li>
+      <li><a class="chip" href="mailto:moustaphad.fall@gmail.com"><span class="dot"></span>moustaphad.fall@gmail.com</a></li>
+      <li><a class="chip" href="https://taphastats.github.io" target="_blank" rel="noopener"><span class="dot"></span>taphastats.github.io</a></li>
+    </ul>
   </div>
+</header>
+
+<div class="stats" role="list">
+  <div class="stat" role="listitem"><b><em>9</em>+</b><span>years building with data &amp; code</span></div>
+  <div class="stat" role="listitem"><b><em>20</em>+</b><span>countries supported across the region</span></div>
+  <div class="stat" role="listitem"><b><em>1</em></b><span>peer-reviewed publication (Springer)</span></div>
+  <div class="stat" role="listitem"><b><em>2</em></b><span>universities taught at</span></div>
+</div>
+
+<main class="wrap">
+
+  <section id="work">
+    <span class="mono eyebrow">// selected work</span>
+    <h2>Data systems that follow people on the move</h2>
+    <div class="cards">
+      <article class="card">
+        <h3>Transhumance Tracking Tool</h3>
+        <p>Regional data backbone for pastoral mobility across West &amp; Central Africa: I manage the regional TTT database, support countries implementing tracking activities, and author the regional analyses and reports.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">regional DB</span><span class="tag">reporting</span></div>
+      </article>
+      <article class="card">
+        <h3>Stability Index</h3>
+        <p>Statistical scoring of local stability to guide stabilization programming: I compute stability scores with logistic regression, maintain the regional database and compile the cross-country reports.</p>
+        <div class="tags"><span class="tag">logistic regression</span><span class="tag">Python</span><span class="tag">modelling</span></div>
+      </article>
+      <article class="card">
+        <h3>Follow Africa — news recommender</h3>
+        <p>Research project at UCAD: scraped Africa-focused publications, built the content database and a Flutter reading app whose usage signals fed the recommender system. Presented at conference.</p>
+        <div class="tags"><span class="tag">scraping</span><span class="tag">recsys</span><span class="tag">Flutter</span></div>
+        <span class="pub">Published by Springer, 2019</span>
+      </article>
+    </div>
+  </section>
+
+  <section id="experience">
+    <span class="mono eyebrow">// experience</span>
+    <h2>Nine years from mobile apps to regional data science</h2>
+    <ul class="timeline">
+      <li>
+        <span class="when">2023 — NOW</span>
+        <h3>Regional Data &amp; Stabilization Officer</h3>
+        <div class="org">IOM — Regional Office for West &amp; Central Africa, Dakar</div>
+        <p>Own the regional data management of the Transhumance Tracking Tool; support countries' implementations; produce regional analyses. Compute stability-index scores (logistic regression) and maintain the regional stability database and reporting.</p>
+      </li>
+      <li>
+        <span class="when">2022 — 2023</span>
+        <h3>Regional Information Management Assistant</h3>
+        <div class="org">IOM — Regional Office for West &amp; Central Africa, Dakar</div>
+        <p>Ran data management for regional flow monitoring: consistency checks, automation of Flow Monitoring Point reports, regional database integrity aligned with OCHA admin data, and cross-country DTM Mobility Tracking reports.</p>
+      </li>
+      <li>
+        <span class="when">2020 — 2022</span>
+        <h3>Part-time Professor</h3>
+        <div class="org">Cheikh Anta Diop University &amp; University Amadou Hampâté Bâ, Dakar</div>
+        <p>Taught data science fundamentals, statistics, machine learning and SQL Server, plus Flutter/Android mobile development. Tutored students through their thesis projects.</p>
+      </li>
+      <li>
+        <span class="when">2018 — 2022</span>
+        <h3>Academic Researcher</h3>
+        <div class="org">Cheikh Anta Diop University, Dakar</div>
+        <p>Built the Follow Africa recommender system end-to-end — scraping pipeline, content database, mobile client — and published the results with Springer after presenting at conference.</p>
+      </li>
+      <li>
+        <span class="when">2017 — 2019</span>
+        <h3>Android &amp; iOS Developer</h3>
+        <div class="org">Kiwi, Dakar</div>
+        <p>Shipped Flutter applications to both the Google Play Store and the Apple App Store — pixel-faithful to design, with optimized on-device databases.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section id="skills">
+    <span class="mono eyebrow">// toolbox</span>
+    <h2>What I work with</h2>
+    <div class="skillgrid">
+      <div class="skillgroup">
+        <h3>Data science &amp; modelling</h3>
+        <ul class="chips">
+          <li class="chip">Python · pandas</li>
+          <li class="chip">Statistics</li>
+          <li class="chip">Machine learning</li>
+          <li class="chip">Logistic regression</li>
+        </ul>
+      </div>
+      <div class="skillgroup">
+        <h3>Data engineering &amp; BI</h3>
+        <ul class="chips">
+          <li class="chip">SQL · SQL Server</li>
+          <li class="chip">Database management</li>
+          <li class="chip">Excel automation</li>
+          <li class="chip">Data quality &amp; consistency</li>
+        </ul>
+      </div>
+      <div class="skillgroup">
+        <h3>Visualization &amp; reporting</h3>
+        <ul class="chips">
+          <li class="chip">Data visualization</li>
+          <li class="chip">Streamlit · Plotly</li>
+          <li class="chip">Regional reports</li>
+          <li class="chip">InDesign</li>
+        </ul>
+      </div>
+      <div class="skillgroup">
+        <h3>Software development</h3>
+        <ul class="chips">
+          <li class="chip">Flutter · Dart</li>
+          <li class="chip">Android &amp; iOS</li>
+          <li class="chip">Web scraping</li>
+          <li class="chip">Recommender systems</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <span class="mono eyebrow">// background</span>
+    <h2>Education &amp; more</h2>
+    <div class="duo">
+      <ul class="edu">
+        <li><b>Master in Business Intelligence — High Honors</b><span>Cheikh Anta Diop University, Dakar · 2016–2017</span></li>
+        <li><b>Bachelor in Computer Science</b><span>Cheikh Anta Diop University, Dakar · 2013–2014</span></li>
+        <li><b>Preparatory Classes — Mathematics &amp; Physics</b><span>ESMT / ESIGELEC · 2011–2013</span></li>
+      </ul>
+      <div class="facts">
+        <div class="fact"><h3>Languages</h3><p>French — fluent · English — fluent</p></div>
+        <div class="fact"><h3>Publication</h3><p>“Follow Africa: Building an African News Recommender System”, Springer, 2019.</p></div>
+        <div class="fact"><h3>Off the clock</h3><p>Reading, coding, gaming, puzzle solving.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span class="mono eyebrow">// contact</span>
+    <h2>Let's put data to work.</h2>
+    <p>Whether it's a regional data pipeline, a statistical model or a dashboard people actually use — I'm interested. References available on request.</p>
+    <a class="cta" href="mailto:moustaphad.fall@gmail.com">Write to me</a>
+    <div class="foot-links">
+      <a href="mailto:moustaphad.fall@gmail.com">moustaphad.fall@gmail.com</a>
+      <a href="/africagames/">Africa Games 🎲 — my mobile game</a>
+      <span>Dakar, Senegal</span>
+    </div>
+  </div>
+  <div class="colophon">— flows drawn nightly over the Sahel —</div>
+</footer>
+
+<script>
+(function () {
+  const canvas = document.getElementById("flow");
+  const ctx = canvas.getContext("2d");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W, H, particles, raf;
+
+  function isDark() {
+    const t = document.documentElement.getAttribute("data-theme");
+    if (t === "dark") return true;
+    if (t === "light") return false;
+    return matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  function palette() {
+    return isDark()
+      ? { fade: "rgba(14, 18, 36, 0.085)", lines: ["rgba(232,169,61,", "rgba(122,148,220,", "rgba(90,110,180,"] }
+      : { fade: "rgba(250, 247, 240, 0.09)", lines: ["rgba(154,106,14,", "rgba(38,52,110,", "rgba(70,86,150,"] };
+  }
+
+  // gentle pseudo-noise flow field: eastward drift with meanders,
+  // like herd routes crossing the sahel band
+  function angleAt(x, y, t) {
+    const n = Math.sin(x * 0.0016 + t * 0.00012) * Math.cos(y * 0.0021 - t * 0.00009)
+            + Math.sin((x + y) * 0.0009 + t * 0.00007) * 0.6;
+    return n * 1.15;
+  }
+
+  function makeParticle(edge) {
+    return {
+      x: edge ? -20 : Math.random() * W,
+      y: Math.random() * H,
+      speed: 0.35 + Math.random() * 0.75,
+      hue: Math.random() < 0.28 ? 0 : (Math.random() < 0.5 ? 1 : 2),
+      alpha: 0.25 + Math.random() * 0.45,
+      width: Math.random() < 0.15 ? 1.4 : 0.8,
+    };
+  }
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = rect.width; H = rect.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    particles = Array.from({ length: Math.min(160, Math.floor(W / 8)) }, () => makeParticle(false));
+    paintBase();
+    if (reduced) drawStatic();
+  }
+
+  function paintBase() {
+    ctx.fillStyle = isDark() ? "#0e1224" : "#faf7f0";
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  function step(t) {
+    const pal = palette();
+    ctx.fillStyle = pal.fade;
+    ctx.fillRect(0, 0, W, H);
+    for (const p of particles) {
+      const a = angleAt(p.x, p.y, t);
+      const nx = p.x + Math.cos(a) * p.speed * 1.9 + 0.55 * p.speed; // eastward drift
+      const ny = p.y + Math.sin(a) * p.speed * 1.6;
+      ctx.strokeStyle = pal.lines[p.hue] + p.alpha + ")";
+      ctx.lineWidth = p.width;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
+      p.x = nx; p.y = ny;
+      if (p.x > W + 20 || p.y < -20 || p.y > H + 20) Object.assign(p, makeParticle(true));
+    }
+    raf = requestAnimationFrame(step);
+  }
+
+  function drawStatic() {
+    // reduced motion: draw the routes once, no animation
+    const pal = palette();
+    paintBase();
+    for (let i = 0; i < 90; i++) {
+      let x = Math.random() * W * 0.25, y = Math.random() * H;
+      const hue = i % 3, alpha = 0.10 + Math.random() * 0.25;
+      ctx.strokeStyle = pal.lines[hue] + alpha + ")";
+      ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.moveTo(x, y);
+      for (let s = 0; s < 240; s++) {
+        const a = angleAt(x, y, 0);
+        x += Math.cos(a) * 2.1 + 1.1; y += Math.sin(a) * 1.7;
+        ctx.lineTo(x, y);
+        if (x > W || y < 0 || y > H) break;
+      }
+      ctx.stroke();
+    }
+  }
+
+  function restart() {
+    cancelAnimationFrame(raf);
+    paintBase();
+    if (reduced) { drawStatic(); } else { raf = requestAnimationFrame(step); }
+  }
+
+  addEventListener("resize", resize);
+  new MutationObserver(restart).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { resize(); restart(); });
+
+  resize();
+  if (!reduced) raf = requestAnimationFrame(step);
+})();
+</script>
+
 </body>
 </html>
