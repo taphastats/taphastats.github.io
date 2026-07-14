@@ -143,7 +143,17 @@
   }
   .portrait-wrap { display: flex; justify-content: center; margin: 0; }
   .portrait { position: relative; width: min(290px, 58vw); }
-  .portrait img { display: block; width: 100%; height: auto; border-radius: 50%; }
+  .portrait img {
+    display: block; width: 100%; height: auto; border-radius: 50%;
+    animation: absorb 3.4s ease-in-out infinite;
+  }
+  @keyframes absorb {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232, 169, 61, 0); }
+    50% { box-shadow: 0 0 46px 8px var(--glow); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .portrait img { animation: none; }
+  }
   .portrait::after {
     content: ""; position: absolute; inset: -16px;
     border: 1px solid var(--edge); border-radius: 50%;
@@ -740,6 +750,34 @@
   var canvas = document.getElementById("flow");
   var ctx = canvas.getContext("2d");
   var W, H, particles, nodes, raf;
+  var sparks = [], frameNo = 0;
+  var PORT = { cx: -9999, cy: -9999, r: 0 };
+
+  // position du portrait : les particules (données) y convergent
+  function portraitRect() {
+    var el = document.querySelector(".portrait img");
+    if (!el) return;
+    var hr = canvas.getBoundingClientRect();
+    var er = el.getBoundingClientRect();
+    PORT.cx = er.left + er.width / 2 - hr.left;
+    PORT.cy = er.top + er.height / 2 - hr.top;
+    PORT.r = er.width / 2;
+  }
+
+  // étincelle "donnée transformée" émise après absorption
+  function makeSpark() {
+    var th = Math.random() * Math.PI * 2;
+    var sp = 0.8 + Math.random() * 1.6;
+    return {
+      x: PORT.cx + Math.cos(th) * (PORT.r + 6),
+      y: PORT.cy + Math.sin(th) * (PORT.r + 6),
+      vx: Math.cos(th) * sp,
+      vy: Math.sin(th) * sp - 0.35,
+      life: 55 + Math.random() * 40,
+      age: 0,
+      r: 1.4 + Math.random() * 1.3
+    };
+  }
 
   function isDark() { return root.getAttribute("data-theme") !== "light"; }
 
@@ -809,17 +847,57 @@
     var pal = palette();
     ctx.fillStyle = pal.fade;
     ctx.fillRect(0, 0, W, H);
+
+    frameNo++;
+    if (frameNo % 90 === 0) portraitRect(); // suit la mise en page (fonts, resize, scroll interne)
+
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       var a = angleAt(p.x, p.y, t);
-      var nx = p.x + Math.cos(a) * p.speed * 1.9 + 0.55 * p.speed;
-      var ny = p.y + Math.sin(a) * p.speed * 1.6;
+      var vx = Math.cos(a) * p.speed * 1.9 + 0.55 * p.speed;
+      var vy = Math.sin(a) * p.speed * 1.6;
+
+      // attraction vers le portrait : les données sont absorbées
+      if (PORT.r > 0) {
+        var dx = PORT.cx - p.x, dy = PORT.cy - p.y;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (dist < PORT.r * 0.9) {
+          // absorbée -> une donnée transformée ressort
+          if (sparks.length < 42) sparks.push(makeSpark());
+          particles[i] = makeParticle(true);
+          continue;
+        }
+        var g = Math.min(2.3, 20000 / (dist * dist)) * (0.5 + p.speed * 0.6);
+        vx += (dx / dist) * g;
+        vy += (dy / dist) * g;
+      }
+
+      var nx = p.x + vx, ny = p.y + vy;
       ctx.strokeStyle = pal.lines[p.hue] + p.alpha + ")";
       ctx.lineWidth = p.width;
       ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nx, ny); ctx.stroke();
       p.x = nx; p.y = ny;
       if (p.x > W + 20 || p.y < -20 || p.y > H + 20) particles[i] = makeParticle(true);
     }
+
+    // étincelles dorées : les données transformées
+    for (var s = sparks.length - 1; s >= 0; s--) {
+      var k = sparks[s];
+      k.age++;
+      k.x += k.vx; k.y += k.vy;
+      k.vy -= 0.008; // légère montée
+      var fade = 1 - k.age / k.life;
+      if (fade <= 0) { sparks.splice(s, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(k.x, k.y, k.r * 2.4, 0, 7);
+      ctx.fillStyle = pal.node + (0.10 * fade) + ")";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(k.x, k.y, k.r, 0, 7);
+      ctx.fillStyle = pal.node + (0.85 * fade) + ")";
+      ctx.fill();
+    }
+
     drawNodes(t);
     raf = requestAnimationFrame(step);
   }
@@ -853,6 +931,8 @@
     var n = Math.min(170, Math.floor(W / 8));
     for (var i = 0; i < n; i++) particles.push(makeParticle(false));
     nodes = makeNodes();
+    sparks = [];
+    portraitRect();
     paintBase();
     if (reduced) drawStatic();
   }
