@@ -779,85 +779,6 @@
     };
   }
 
-  // mini-graphique animé : le storytelling qui sort de la photo
-  var glyphs = [], glyphKind = 0;
-  function makeGlyph() {
-    var kinds = ["bars", "line", "donut"];
-    var th = -1.7 + Math.random() * 2.4; // vers le haut et la droite, loin du texte
-    glyphKind++;
-    return {
-      kind: kinds[glyphKind % 3],
-      x: PORT.cx + Math.cos(th) * (PORT.r + 16),
-      y: PORT.cy + Math.sin(th) * (PORT.r + 16),
-      vx: Math.cos(th) * (0.35 + Math.random() * 0.4),
-      vy: Math.sin(th) * (0.35 + Math.random() * 0.4) - 0.12,
-      life: 170 + Math.random() * 80,
-      age: 0
-    };
-  }
-
-  function drawGlyph(g, pal) {
-    var pr = g.age / g.life;                                  // progression 0→1
-    var env = Math.min(pr / 0.1, 1) * Math.min((1 - pr) / 0.25, 1); // fondu entrée/sortie
-    if (env <= 0) return;
-    var gold = pal.node, blue = pal.lines[1];
-    var k = Math.min(pr * 2.1, 1);                            // progression du "dessin"
-    ctx.save();
-    ctx.translate(g.x, g.y);
-    ctx.scale(1.5, 1.5);
-
-    // petite carte de fond : le graphique "produit fini"
-    ctx.globalAlpha = env;
-    ctx.fillStyle = isDark() ? "rgba(16, 21, 46, 0.72)" : "rgba(255, 253, 248, 0.8)";
-    ctx.strokeStyle = gold + "0.35)";
-    ctx.lineWidth = 0.8;
-    ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(-8, -8, 50, 32, 4); else ctx.rect(-8, -8, 50, 32);
-    ctx.fill(); ctx.stroke();
-    ctx.globalAlpha = 1;
-
-    if (g.kind === "bars") {
-      ctx.strokeStyle = blue + (0.7 * env) + ")";
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(-2, 18); ctx.lineTo(35, 18); ctx.stroke();
-      var hts = [9, 15, 21, 12];
-      for (var i = 0; i < 4; i++) {
-        var bk = Math.max(0, Math.min((k - i * 0.14) / 0.55, 1));
-        if (bk <= 0) continue;
-        ctx.fillStyle = (i === 2 ? gold : blue) + ((i === 2 ? 1 : 0.85) * env) + ")";
-        ctx.fillRect(i * 9, 18 - hts[i] * bk, 6, hts[i] * bk);
-      }
-    } else if (g.kind === "line") {
-      var pts = [[-2, 16], [7, 8], [16, 12], [25, 1], [35, 6]];
-      var seg = k * (pts.length - 1);
-      ctx.strokeStyle = gold + env + ")";
-      ctx.lineWidth = 2;
-      ctx.lineJoin = "round"; ctx.lineCap = "round";
-      ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
-      for (var s2 = 1; s2 < pts.length; s2++) {
-        if (seg >= s2) { ctx.lineTo(pts[s2][0], pts[s2][1]); }
-        else {
-          var f = seg - (s2 - 1);
-          if (f > 0) ctx.lineTo(pts[s2 - 1][0] + (pts[s2][0] - pts[s2 - 1][0]) * f,
-                                pts[s2 - 1][1] + (pts[s2][1] - pts[s2 - 1][1]) * f);
-          break;
-        }
-      }
-      ctx.stroke();
-      var tip = Math.min(Math.floor(seg), pts.length - 1);
-      ctx.beginPath(); ctx.arc(pts[tip][0], pts[tip][1], 2.6, 0, 7);
-      ctx.fillStyle = gold + env + ")";
-      ctx.fill();
-    } else { // donut
-      ctx.lineWidth = 4.5;
-      ctx.strokeStyle = blue + (0.5 * env) + ")";
-      ctx.beginPath(); ctx.arc(17, 8, 11, 0, 7); ctx.stroke();
-      ctx.strokeStyle = gold + env + ")";
-      ctx.beginPath(); ctx.arc(17, 8, 11, -Math.PI / 2, -Math.PI / 2 + k * 0.72 * Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
 
   function isDark() { return root.getAttribute("data-theme") !== "light"; }
 
@@ -944,7 +865,6 @@
         if (dist < PORT.r * 0.9) {
           // absorbée -> une donnée transformée ressort
           if (sparks.length < 42) sparks.push(makeSpark());
-          if (frameNo % 2 === 0 && glyphs.length < 7) glyphs.push(makeGlyph());
           particles[i] = makeParticle(true);
           continue;
         }
@@ -977,15 +897,6 @@
       ctx.arc(k.x, k.y, k.r, 0, 7);
       ctx.fillStyle = pal.node + (0.85 * fade) + ")";
       ctx.fill();
-    }
-
-    // mini-graphiques : le storytelling
-    for (var gI = glyphs.length - 1; gI >= 0; gI--) {
-      var gl = glyphs[gI];
-      gl.age++;
-      gl.x += gl.vx; gl.y += gl.vy;
-      if (gl.age >= gl.life) { glyphs.splice(gI, 1); continue; }
-      drawGlyph(gl, pal);
     }
 
     drawNodes(t);
@@ -1022,7 +933,6 @@
     for (var i = 0; i < n; i++) particles.push(makeParticle(false));
     nodes = makeNodes();
     sparks = [];
-    glyphs = [];
     portraitRect();
     paintBase();
     if (reduced) drawStatic();
